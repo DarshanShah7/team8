@@ -1,8 +1,10 @@
 package com.db.grad.javaapi.controller;
 
+import com.db.grad.javaapi.model.CounterParty;
 import com.db.grad.javaapi.model.Security;
 import com.db.grad.javaapi.model.User;
 
+import com.db.grad.javaapi.service.CounterPartyService;
 import com.db.grad.javaapi.service.UserService;
 import com.db.grad.javaapi.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,15 @@ public class UserController {
     
     private UserService userService;
     
+    private CounterPartyService counterPartyService;
+    
+    
+    
     @Autowired
-    public UserController(UserService ss) {
+    public UserController(UserService ss, CounterPartyService counterPartyService) {
+        
         this.userService = ss;
+        this.counterPartyService = counterPartyService;
     }
     
     private String generateUniqueID() {
@@ -32,6 +40,14 @@ public class UserController {
         User user1 = new User(user);
         user.setUserPublicId(generateUniqueID());
         return userService.saveUser(user);
+    }
+    
+    @PostMapping("/create-counterparty")
+    public CounterParty createCounterParty(@Valid @RequestBody CounterParty counterParty){
+        CounterParty counterParty1 = new CounterParty(counterParty);
+        counterParty1.setCounterPartyPublicId(generateUniqueID());
+        return counterPartyService.createCounterParty(counterParty1);
+        
     }
     
 }

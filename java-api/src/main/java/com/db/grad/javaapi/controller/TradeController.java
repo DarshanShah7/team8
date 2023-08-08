@@ -1,5 +1,7 @@
 package com.db.grad.javaapi.controller;
 
+import com.db.grad.javaapi.exception.ResourceNotFoundException;
+import com.db.grad.javaapi.model.Security;
 import com.db.grad.javaapi.model.Trade;
 import com.db.grad.javaapi.model.User;
 import com.db.grad.javaapi.service.TradeService;
@@ -21,11 +23,25 @@ public class TradeController {
         this.tradeService = tradeService;
     }
     
-//    @PostMapping("/create-trade")
-//    public User createUser(@Valid @RequestBody Trade  trade) {
-//        return tradeService.createTrade(trade);
-//    }
-
+    @PostMapping("/create-trade")
+    public Trade createTrade(@Valid @RequestBody Trade  trade) {
+        return tradeService.createTrade(trade);
+    }
+    
+    @GetMapping("/get-trade/{tradePublicId}")
+    public Trade getTrade(@PathVariable String tradePublicId){
+        return tradeService.getTrade(tradePublicId);
+    }
+    
+    @GetMapping("/get-security/{tradePublicId}")
+    public Security getSecurity(@PathVariable String tradePublicId){
+        return tradeService.getSecurity(tradePublicId);
+    }
+    
+    @PutMapping("/update-trade/{tradePublicId}")
+    public Trade updateTrade(@PathVariable String tradePublicId, @RequestBody @Valid Trade trade) throws ResourceNotFoundException {
+        return tradeService.updateTrade(tradePublicId,trade);
+    }
 }
 
 

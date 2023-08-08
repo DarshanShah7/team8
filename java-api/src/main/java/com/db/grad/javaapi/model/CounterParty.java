@@ -27,6 +27,14 @@ public class CounterParty {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "counterParty", fetch = FetchType.LAZY)
     private List<Trade> tradeList;
     
+    public CounterParty() {
+    }
+    
+    public CounterParty(CounterParty counterParty){
+        this.name = counterParty.getName();
+        this.tradeList = counterParty.getTradeList();
+    }
+    
     public Long getCounterPartyPrivateId() {
         return counterPartyPrivateId;
     }

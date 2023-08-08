@@ -50,7 +50,7 @@ public class BookService {
         List<BookUser>bookUserList =  bookUserRepository.findByUserUserPrivateId(userId);
         List<Book>bookList = new ArrayList<>();
         for(int i = 0; i< bookUserList.size();i++){
-            Book book = this.bookUserRepository.findByBookUserId(bookUserList.get(i).getBookUserId()).getBook();
+            Book book = bookUserList.get(i).getBook();
             System.out.println(book.getBookName());
             bookList.add(new Book(book.getBookPrivateId(), book.getBookPublicId() , book.getBookName()));
         }

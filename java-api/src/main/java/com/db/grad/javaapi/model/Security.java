@@ -59,7 +59,7 @@ public class Security {
         this.securityPrivateId = securityPrivateId;
     }
     
-    @JsonManagedReference
+    @JsonManagedReference(value = "security")
     public List<Trade> getTradeList() {
         return tradeList;
     }
