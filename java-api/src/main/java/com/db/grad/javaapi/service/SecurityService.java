@@ -6,6 +6,8 @@ import com.db.grad.javaapi.repository.SecurityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -56,5 +58,9 @@ public class SecurityService {
         securityRepository.delete(security);
         
         return security;
+    }
+
+    public List<Security> findByMaturityDateBetween(Date startDate, Date endDate) {
+        return securityRepository.findByMaturityDateBetween(startDate, endDate);
     }
 }
