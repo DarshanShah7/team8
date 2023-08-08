@@ -38,11 +38,10 @@ public class SecurityController {
         return securityService.getAllSecurity();
     }
     
-    @GetMapping("/getById")
+    @GetMapping("/getById/{")
     public ResponseEntity<Security> getEmployeeById( )
             throws ResourceNotFoundException {
-//        return
-//        Security security = securityService.findSecurityById(id);
+        
         return ResponseEntity.ok().body(new Security());
     }
 
@@ -63,7 +62,7 @@ public class SecurityController {
     }
     
     @PutMapping("/updateSecurity/{id}")
-    public ResponseEntity<Security> updateSecurity(@PathVariable(value = "id") Long id,
+    public ResponseEntity<Security> updateSecurity(@PathVariable(value = "id") String id,
                                                    @Valid @RequestBody Security securityDetails) throws ResourceNotFoundException {
         
         final Security updatedSecurity = securityService.updateSecurityDetails(id, securityDetails);
@@ -71,7 +70,7 @@ public class SecurityController {
     }
     
     @DeleteMapping("/deleteSecurity/{id}")
-    public Map<String, Boolean> deleteSecurity(@PathVariable(value = "id") Long id)
+    public Map<String, Boolean> deleteSecurity(@PathVariable(value = "id") String id)
             throws ResourceNotFoundException {
         Security dogs = securityService.deleteTheSecurity(id);
         

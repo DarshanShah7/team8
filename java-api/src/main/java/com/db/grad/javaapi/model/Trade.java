@@ -17,22 +17,22 @@ public class Trade {
     @Column(name = "trade_private_id")
     private Long tradePrivateID;
     
-    @NotNull
+   
     @Column(name = "trade_public_id")
     private String tradePublicId;
     
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "book_private_id", nullable = false)
+    @JoinColumn(name = "book_private_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Book book;
     
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "security_private_id", nullable = false)
+    @JoinColumn(name = "security_private_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Security security;
     
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "counterparty_private_id", nullable = false)
+    @JoinColumn(name = "counterparty_private_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private CounterParty counterParty;
     
@@ -56,6 +56,21 @@ public class Trade {
     @NotNull
     @Column(name = "settlement_date")
     private Date settlementDate;
+    
+    public Trade() {
+    }
+    
+    public Trade(Trade trade){
+        
+        this.book = trade.getBook();
+        this.security = trade.getSecurity();
+        this.counterParty = trade.getCounterParty();
+        this.quantity = trade.getQuantity();
+        this.status = trade.getStatus();
+        this.price = trade.getPrice();
+        this.tradeDate = trade.getTradeDate();
+        this.settlementDate = trade.getSettlementDate();
+    }
     
     public Long getTradePrivateID() {
         return tradePrivateID;
@@ -122,7 +137,7 @@ public class Trade {
         this.settlementDate = settlementDate;
     }
     
-    @JsonBackReference
+    @JsonBackReference(value = "book-reference")
     public Book getBook() {
         return book;
     }
@@ -131,7 +146,7 @@ public class Trade {
         this.book = book;
     }
     
-    @JsonBackReference
+    @JsonBackReference(value = "security")
     public Security getSecurity() {
         return security;
     }
