@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface TradeRepository extends JpaRepository<Trade,Long> {
@@ -15,4 +16,8 @@ public interface TradeRepository extends JpaRepository<Trade,Long> {
     
     @Query("SELECT t.security FROM Trade t WHERE t.tradePublicId = :tradePublicId")
     Security findSecurityByTradePublicId(@Param("tradePublicId")String tradePublicId);
+    
+    
+    @Query("SELECT t FROM Trade t WHERE t.status = :status")
+    List<Trade> findTradesByStatus(@Param("status")String status);
 }

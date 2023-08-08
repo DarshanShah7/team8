@@ -3,12 +3,12 @@ package com.db.grad.javaapi.controller;
 import com.db.grad.javaapi.exception.ResourceNotFoundException;
 import com.db.grad.javaapi.model.Security;
 import com.db.grad.javaapi.model.Trade;
-import com.db.grad.javaapi.model.User;
 import com.db.grad.javaapi.service.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/trade")
@@ -21,6 +21,11 @@ public class TradeController {
     @Autowired
     public TradeController(TradeService tradeService){
         this.tradeService = tradeService;
+    }
+    
+    @GetMapping("/get-all-trades/")
+    public List<Trade>getAllTrades(){
+        return tradeService.getAllTrades();
     }
     
     @PostMapping("/create-trade")
@@ -41,6 +46,11 @@ public class TradeController {
     @PutMapping("/update-trade/{tradePublicId}")
     public Trade updateTrade(@PathVariable String tradePublicId, @RequestBody @Valid Trade trade) throws ResourceNotFoundException {
         return tradeService.updateTrade(tradePublicId,trade);
+    }
+    
+    @GetMapping("/get-trades-by-status/{status}")
+    public List<Trade> getTradesByStatus(@PathVariable String status){
+        return tradeService.getTradesByStatus(status);
     }
 }
 

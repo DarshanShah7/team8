@@ -3,13 +3,12 @@ package com.db.grad.javaapi.service;
 import com.db.grad.javaapi.exception.ResourceNotFoundException;
 import com.db.grad.javaapi.model.Security;
 import com.db.grad.javaapi.model.Trade;
-import com.db.grad.javaapi.repository.SecurityRepository;
 import com.db.grad.javaapi.repository.TradeRepository;
 import com.db.grad.javaapi.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,6 +46,15 @@ public class TradeService {
         tr.setTradePrivateID(trade1.getTradePrivateID());
         tr.setTradePublicId(tradePublicId);
         return tradeResository.save(tr);
+    }
+    
+    public List<Trade> getTradesByStatus(String status){
+        return tradeResository.findTradesByStatus(status);
+        
+    }
+    
+    public List<Trade>getAllTrades(){
+        return tradeResository.findAll();
     }
     
 }

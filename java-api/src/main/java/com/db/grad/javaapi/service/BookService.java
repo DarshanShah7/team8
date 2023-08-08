@@ -34,20 +34,24 @@ public class BookService {
         Utils utils = new Utils();
         return utils.generateRandomString(8);
     }
-    public Book createBook(String bookName , Long userId){
+    public Book createBook(String bookName , String userId){
         Book book = new Book(bookName);
         book.setBookPublicId(generateUniqueID());
         Book book1 = this.bookRepository.save(book);
-        Optional<User> user1 = userRepository.findByUserPrivateId(userId);
+        Optional<User> user1 = userRepository.findByUserPublicId(userId);
         BookUser bookUser = new BookUser(user1.get(), book1) ;
         book1.addBookUser(bookUser);
-//        bookUser.setBookUserId(generateUniqueID());
         bookUserRepository.save(bookUser);
         return book1;
     }
     
-    public List<Book> getAllBooks(Long userId){
-        List<BookUser>bookUserList =  bookUserRepository.findByUserUserPrivateId(userId);
+    public List<Book>getAllBooks(){
+        return bookRepository.findAll();
+    }
+    
+    public List<Book> getBookById(String userId){
+        Long userId1 = userRepository.findByUserPublicId(userId).get().getUserPrivateId();
+        List<BookUser>bookUserList =  bookUserRepository.findByUserUserPrivateId(userId1);
         List<Book>bookList = new ArrayList<>();
         for(int i = 0; i< bookUserList.size();i++){
             Book book = bookUserList.get(i).getBook();

@@ -13,7 +13,6 @@ import java.util.List;
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"})
 public class BookController {
     
-    
     private BookService bookService;
     
     @Autowired
@@ -26,21 +25,19 @@ public class BookController {
         return utils.generateRandomString(8);
     }
     
-    
-    @GetMapping("")
-    public String getBooks(){
-        return "Hello World!";
-        
+    @GetMapping("/get-all-books")
+    public List<Book> getBooks(){
+        return bookService.getAllBooks();
     }
+    
     @PostMapping("/create-book/{user-id}/{book-name}")
-    public Book createBook(  @PathVariable("user-id")  Long userId ,   @PathVariable("book-name") String bookName) {
-        
+    public Book createBook(  @PathVariable("user-id")  String userId , @PathVariable("book-name") String bookName) {
         return bookService.createBook(bookName,userId);
     }
     
-    @GetMapping("/get-all-books/{user-id}")
-    public List<Book> getAllBooks(@PathVariable("user-id")Long userId){
-        return bookService.getAllBooks(userId);
+    @GetMapping("/get-book-by-id/{user-id}")
+    public List<Book> getBookById(@PathVariable("user-id")String userId){
+        return bookService.getBookById(userId);
     }
     
 }

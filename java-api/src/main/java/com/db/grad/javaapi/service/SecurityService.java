@@ -29,9 +29,9 @@ public class SecurityService {
         return securityRepository.saveAndFlush(security);
     }
     
-    public Security updateSecurityDetails( long id, Security newSecurityDetails ) throws ResourceNotFoundException
+    public Security updateSecurityDetails( String id, Security newSecurityDetails ) throws ResourceNotFoundException
     {
-        Security securityToUpdate = securityRepository.findById(id)
+        Security securityToUpdate = securityRepository.findBySecurityPublicId(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Security not found for this id :: " + id));
         
         securityToUpdate.setSecurityPrivateId(newSecurityDetails.getSecurityPrivateId());
@@ -44,13 +44,12 @@ public class SecurityService {
         securityToUpdate.setFaceValue(newSecurityDetails.getFaceValue());
         securityToUpdate.setStatus(newSecurityDetails.getStatus());
         final Security updatedSecurity = securityRepository.save(securityToUpdate);
-        
         return updatedSecurity;
     }
     
-    public Security deleteTheSecurity( long id ) throws ResourceNotFoundException
+    public Security deleteTheSecurity( String id ) throws ResourceNotFoundException
     {
-        Security security = securityRepository.findById(id)
+        Security security = securityRepository.findBySecurityPublicId(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Security not found for this id :: " + id));
         
         securityRepository.delete(security);
