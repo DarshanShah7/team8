@@ -1,6 +1,7 @@
 package com.db.grad.javaapi.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -15,17 +16,35 @@ public class BookUser {
     @Column(name = "book_user_id")
     private Long bookUserId;
     
+    public BookUser() {
+    }
+    
+    public BookUser(User user, Book book) {
+        this.user = user;
+        this.book = book;
+    }
+    
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_private_id", nullable = false)
+    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
     
+    public Long getBookUserId() {
+        return bookUserId;
+    }
+    
+    public void setBookUserId(Long bookUserId) {
+        this.bookUserId = bookUserId;
+    }
+    
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "book_private_id", nullable = false)
+    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Book book;
     
-    @JsonBackReference
+    @JsonBackReference(value="book-reference")
     public Book getBook() {
         return book;
     }
@@ -34,7 +53,7 @@ public class BookUser {
         this.book = book;
     }
     
-    @JsonBackReference
+    @JsonBackReference(value = "user-reference")
     public User getUser() {
         return user;
     }

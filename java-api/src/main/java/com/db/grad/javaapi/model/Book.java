@@ -1,9 +1,13 @@
 package com.db.grad.javaapi.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,11 +24,26 @@ public class Book {
     private String bookName;
     
     @Column(name = "book-users")
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.LAZY)
-    private List<BookUser> bookUsers;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.EAGER)
+    private List<BookUser> bookUsers = new ArrayList<>();
     @NotNull
     @Column(name = "book_public_id")
     private String bookPublicId;
+    
+    public Book(String bookName) {
+        this.bookName = bookName;
+    }
+    
+    public Book(Long bookPrivateId, String bookPublicId, String bookName){
+        this.bookPrivateId = bookPrivateId;
+        this.bookPublicId = bookPublicId;
+        this.bookName = bookName;
+    }
+    
+    public Book(){
+            this.bookUsers  = new ArrayList<>();
+    }
     
     public Long getBookPrivateId() {
         return bookPrivateId;
@@ -50,13 +69,17 @@ public class Book {
         this.bookName = bookName;
     }
     
-    @JsonManagedReference
+    @JsonManagedReference(value="book-reference")
     public List<BookUser> getBookUsers() {
         return bookUsers;
     }
     
     public void setBookUsers(List<BookUser> bookUsers) {
         this.bookUsers = bookUsers;
+    }
+    
+    public void addBookUser(BookUser bookUser){
+        this.bookUsers.add(bookUser);
     }
     
 }

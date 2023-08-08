@@ -1,5 +1,6 @@
 package com.db.grad.javaapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -46,6 +47,7 @@ public class Security {
     private String status;
     
     @Column(name = "trade_list")
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "security", fetch = FetchType.LAZY)
     private List<Trade> tradeList;
     

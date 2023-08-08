@@ -1,5 +1,6 @@
 package com.db.grad.javaapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -15,7 +16,6 @@ public class User {
     @Column(name = "user_private_id")
     private Long userPrivateId;
     
-    @NotNull
     @Column(name = "user_public_id")
     private String userPublicId;
     
@@ -31,9 +31,22 @@ public class User {
     @Column(name = "role")
     private String role;
     
+  
     @Column(name = "book-users")
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private List<BookUser> bookUsers;
+    
+    public User() {
+    }
+    
+    public User(User user) {
+        this.userPrivateId = user.userPrivateId;
+        this.name = user.name;
+        this.email = user.email;
+        this.role = user.role;
+        this.bookUsers = user.bookUsers;
+    }
     
     public Long getUserPrivateId() {
         return userPrivateId;
@@ -76,7 +89,7 @@ public class User {
     }
     
     
-    @JsonManagedReference
+    @JsonManagedReference(value = "user-reference")
     public List<BookUser> getBookUsers() {
         return bookUsers;
     }
