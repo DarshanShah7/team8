@@ -1,8 +1,9 @@
 package com.db.grad.javaapi.controller;
 
-import com.db.grad.javaapi.model.Security;
+import com.db.grad.javaapi.model.CounterParty;
 import com.db.grad.javaapi.model.User;
-
+import com.db.grad.javaapi.service.CounterPartyService;
+import com.db.grad.javaapi.service.SecurityService;
 import com.db.grad.javaapi.service.UserService;
 import com.db.grad.javaapi.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,24 +15,39 @@ import javax.validation.Valid;
 @RequestMapping("/users")
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"})
 public class UserController {
-    
-    
+    @GetMapping("/index")
+    public String index() {
+        return ("Hello World");
+    }
+
     private UserService userService;
     
+    private CounterPartyService counterPartyService;
+    
+    
+    
     @Autowired
-    public UserController(UserService ss) {
+    public UserController(UserService ss, CounterPartyService counterPartyService) {
         this.userService = ss;
+        this.counterPartyService = counterPartyService;
     }
     
     private String generateUniqueID() {
         Utils utils = new Utils();
         return utils.generateRandomString(8);
     }
-    @PostMapping("/create-user")
-    public User createUser(@Valid @RequestBody User  user) {
-        User user1 = new User(user);
-        user.setUserPublicId(generateUniqueID());
+    @PostMapping("/createUser")
+    public User createUser(@RequestBody User  user) {
+        System.out.println("1");
         return userService.saveUser(user);
+    }
+    
+    @PostMapping("/create-counterparty")
+    public CounterParty createCounterParty(@Valid @RequestBody CounterParty counterParty){
+        CounterParty counterParty1 = new CounterParty(counterParty);
+        counterParty1.setCounterPartyPublicId(generateUniqueID());
+        return counterPartyService.createCounterParty(counterParty1);
+        
     }
     
 }

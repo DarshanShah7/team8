@@ -4,11 +4,17 @@ import com.db.grad.javaapi.exception.ResourceNotFoundException;
 import com.db.grad.javaapi.model.Security;
 import com.db.grad.javaapi.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,12 +38,22 @@ public class SecurityController {
         return securityService.getAllSecurity();
     }
     
-    @GetMapping("/getById")
-    public ResponseEntity<Security> getEmployeeById( )
-            throws ResourceNotFoundException {
-//        return
-//        Security security = securityService.findSecurityById(id);
-        return ResponseEntity.ok().body(new Security());
+//    @GetMapping("/getById/"){}
+//    public ResponseEntity<Security> getEmployeeById( )
+//            throws ResourceNotFoundException {
+//
+//        return ResponseEntity.ok().body(new Security());
+//    }
+
+    @GetMapping("/date")
+    public List<Security> getSecuritiesByDateRange(
+            @RequestParam String startDate,
+            @RequestParam String endDate) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date parsedStartDate = dateFormat.parse(startDate);
+        Date parsedEndDate = dateFormat.parse(endDate);
+        return securityService.findByMaturityDateBetween(parsedStartDate, parsedEndDate);
     }
     
     @PostMapping("/create-security")
@@ -46,7 +62,7 @@ public class SecurityController {
     }
     
     @PutMapping("/updateSecurity/{id}")
-    public ResponseEntity<Security> updateSecurity(@PathVariable(value = "id") Long id,
+    public ResponseEntity<Security> updateSecurity(@PathVariable(value = "id") String id,
                                                    @Valid @RequestBody Security securityDetails) throws ResourceNotFoundException {
         
         final Security updatedSecurity = securityService.updateSecurityDetails(id, securityDetails);
@@ -54,7 +70,7 @@ public class SecurityController {
     }
     
     @DeleteMapping("/deleteSecurity/{id}")
-    public Map<String, Boolean> deleteSecurity(@PathVariable(value = "id") Long id)
+    public Map<String, Boolean> deleteSecurity(@PathVariable(value = "id") String id)
             throws ResourceNotFoundException {
         Security dogs = securityService.deleteTheSecurity(id);
         
