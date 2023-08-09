@@ -30,17 +30,18 @@ public class UserService {
         Utils utils = new Utils();
         return utils.generateRandomString(8);
     }
-    
+
     public User saveUser(User user){
         User user1 = new User(user);
         user1.setUserPublicId(generateUniqueID());
+        User toBeReturned = this.userRepository.save(user1);
         Book book = new Book();
-        book.setBookName(user1.getUserPublicId()+"_book");
+        book.setBookName(toBeReturned.getUserPublicId()+"_book");
         book.setBookPublicId(generateUniqueID());
         bookRepository.save(book);
-        BookUser bookUser = new BookUser(user1,book);
+        BookUser bookUser = new BookUser(toBeReturned,book);
         bookUserRepository.save(bookUser);
-        return this.userRepository.save(user);
+        return toBeReturned;
     }
     
 }

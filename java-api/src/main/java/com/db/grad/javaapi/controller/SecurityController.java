@@ -38,12 +38,12 @@ public class SecurityController {
         return securityService.getAllSecurity();
     }
     
-    @GetMapping("/getById/{")
-    public ResponseEntity<Security> getEmployeeById( )
-            throws ResourceNotFoundException {
-        
-        return ResponseEntity.ok().body(new Security());
-    }
+//    @GetMapping("/getById/"){}
+//    public ResponseEntity<Security> getEmployeeById( )
+//            throws ResourceNotFoundException {
+//
+//        return ResponseEntity.ok().body(new Security());
+//    }
 
     @GetMapping("/date")
     public List<Security> getSecuritiesByDateRange(

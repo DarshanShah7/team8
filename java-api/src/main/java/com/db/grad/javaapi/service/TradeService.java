@@ -54,7 +54,8 @@ public class TradeService {
     }
     
     public List<Trade>getAllTrades(){
-        return tradeResository.findAll();
+        List<Trade>tradelist =  tradeResository.findAll();
+        return tradelist;
     }
     
 }

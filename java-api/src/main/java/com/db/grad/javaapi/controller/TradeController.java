@@ -23,7 +23,7 @@ public class TradeController {
         this.tradeService = tradeService;
     }
     
-    @GetMapping("/get-all-trades/")
+    @GetMapping("/get-all-trades")
     public List<Trade>getAllTrades(){
         return tradeService.getAllTrades();
     }
